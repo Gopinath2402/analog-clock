@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anolog Watch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            user-select: none;
+        }
+        
+        .container {
+            width: 100%;
+            height: 100vh;
+            background: #3C3B3F;
+            background: -webkit-linear-gradient(to right, #605C3C, #3C3B3F);
+            background: linear-gradient(to right, #605C3C, #3C3B3F);
+            font-family: 'Concert One', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .clock {
+            width: 300px;
+            height: 300px;
+            background: hsl(345, 100%, 100%);
+            border-radius: 50%;
+            position: relative;
+            border: 7px solid black;
+        }
+        
+        .clock .number {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transform: rotate(var(--rotation));
+            font-size: 1.4rem;
+        }
+        
+        .clock .number1 {
+            --rotation: 30deg
+        }
+        
+        .clock .number2 {
+            --rotation: 60deg
+        }
+        
+        .clock .number3 {
+            --rotation: 90deg
+        }
+        
+        .clock .number4 {
+            --rotation: 120deg
+        }
+        
+        .clock .number5 {
+            --rotation: 150deg
+        }
+        
+        .clock .number6 {
+            --rotation: 180deg
+        }
+        
+        .clock .number7 {
+            --rotation: 210deg
+        }
+        
+        .clock .number8 {
+            --rotation: 240deg
+        }
+        
+        .clock .number9 {
+            --rotation: 270deg
+        }
+        
+        .clock .number10 {
+            --rotation: 300deg
+        }
+        
+        .clock .number11 {
+            --rotation: 330deg
+        }
+        
+        .num12,
+        .num6,
+        .num3,
+        .num9 {
+            color: red;
+        }
+        
+        .clock span {
+            display: inline-block;
+        }
+        
+        .num6 {
+            transform: rotate(180deg);
+        }
+        
+        .num9 {
+            transform: rotate(90deg);
+        }
+        
+        .num3 {
+            transform: rotate(270deg);
+        }
+        
+        .num2 {
+            transform: rotate(-60deg);
+        }
+        
+        .num10 {
+            transform: rotate(60deg);
+        }
+        
+        .num1 {
+            transform: rotate(-30deg);
+        }
+        
+        .num11 {
+            transform: rotate(30deg);
+        }
+        
+        .num4 {
+            transform: rotate(-120deg);
+        }
+        
+        .num8 {
+            transform: rotate(120deg);
+        }
+        
+        .num5 {
+            transform: rotate(-150deg);
+        }
+        
+        .num7 {
+            transform: rotate(150deg);
+        }
+        
+        .clock .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            border: 1px solid hsl(100, 100%, 40%);
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            background-color: black;
+            transform-origin: bottom;
+            z-index: 10;
+            transform: translateX(-50%) rotate(calc(var(--rotation)*1deg));
+        }
+        
+        .clock .hand.sechand {
+            height: 45%;
+            width: 3px;
+            background-color: hsl(50, 100%, 60%);
+        }
+        
+        .clock .hand.minhand {
+            height: 45%;
+            width: 6px;
+            background-color: black;
+        }
+        
+        .clock .hand.hourhand {
+            height: 33%;
+            width: 10px;
+            background-color: black;
+        }
+        
+        .clock::after {
+            content: '';
+            position: absolute;
+            background-color: red;
+            border-radius: 50%;
+            z-index: 11;
+            width: 15px;
+            height: 15px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="clock">
+            <div class="hand hourhand" data-hour-hand></div>
+            <div class="hand minhand" data-min-hand></div>
+            <div class="hand sechand" data-sec-hand></div>
+            <div class="number number1"><span class="num1">1</span></div>
+            <div class="number number2"><span class="num2">2</span></div>
+            <div class="number number3"><span class="num3">3</span></div>
+            <div class="number number4"><span class="num4">4</span></div>
+            <div class="number number5"><span class="num5">5</span></div>
+            <div class="number number6"><span class="num6">6</span></div>
+            <div class="number number7"><span class="num7">7</span></div>
+            <div class="number number8"><span class="num8">8</span></div>
+            <div class="number number9"><span class="num9">9</span></div>
+            <div class="number number10"><span class="num10">10</span></div>
+            <div class="number number11"><span class="num11">11</span></div>
+            <div class="number number12"><span class="num12">12</span></div>
+        </div>
+    </div>
+    <script>
+        console.log('app started');
+        setInterval(setClock, 1000);
+
+        const hourHand = document.querySelector('[data-hour-hand]');
+        const minHand = document.querySelector('[data-min-hand]');
+        const secHand = document.querySelector('[data-sec-hand]');
+
+
+        function setClock() {
+            const currentDate = new Date();
+            const secRatio = currentDate.getSeconds() / 60;
+            const minRatio = (secRatio + currentDate.getMinutes()) / 60;
+            const hourRatio = (minRatio + currentDate.getHours()) / 12;
+
+            setRotation(secHand, secRatio);
+            setRotation(minHand, minRatio);
+            setRotation(hourHand, hourRatio);
+        }
+
+        function setRotation(ele, rotationRatio) {
+            ele.style.setProperty('--rotation', rotationRatio * 360)
+        }
+        setClock()
+    </script>
+</body>
+
+</html>
